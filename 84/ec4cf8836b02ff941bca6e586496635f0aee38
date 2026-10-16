@@ -1,0 +1,39 @@
+README.md
+  s_4073584d444722::t_c3202a69db72dd 97,99-117,150-151,158,160-161,173
+dist/app.mjs
+  s_4073584d444722::t_dcc59bbedfc2af 2,17-22,24-29,31-34,36-37,85,97,116-117,123,134-136,166-167,172
+dist/audio/manifest.json
+  s_4073584d444722::t_e2e05a0ca0d002 1
+dist/core.mjs
+  s_4073584d444722::t_ea634b059645ad 1,4,11,13-14
+dist/styles.css
+  s_4073584d444722::t_da918e34a3cf18 11-12
+dist/sw.js
+  s_4073584d444722::t_fbe6409543b894 1-2
+dist/voice.mjs
+  s_4073584d444722::t_6e17ac3a8cd1da 1-51
+package.json
+  s_4073584d444722::t_c73348e75c6d31 1-18
+scripts/generate-audio.mjs
+  s_4073584d444722::t_2138799815547b 1-47
+scripts/serve.mjs
+  s_4073584d444722::t_5f9424090a1925 7
+tests/voice.test.mjs
+  s_4073584d444722::t_d570faaa34c4c2 1-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "84ec4cf8836b02ff941bca6e586496635f0aee38",
+  "prompts": {},
+  "sessions": {
+    "s_4073584d444722": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a146e3-9ed8-7d82-8ead-0acde310e56b",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "paminOS <58338911+sudockin@users.noreply.github.com>"
+    }
+  }
+}
