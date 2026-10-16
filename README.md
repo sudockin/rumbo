@@ -94,9 +94,27 @@ Progress is stored per browser and origin. A local copy, a home Wi-Fi address, a
 
 ### Listening
 
-Rumbo automatically prefers an available `es-MX` voice. If your browser does not expose one, add a Spanish Mexico voice through your device’s accessibility or text-to-speech settings, then reopen the app. You can deliberately choose another Spanish voice; the app displays its language.
+Rumbo can play a prerecorded Mexican Spanish voice pack, with device speech available as a fallback. Recorded speech is labeled **AI-generated** in the app. The default Natural pace is 1.0×; Clear uses 0.9× and Slow uses 0.8×. Slower buttons also use 0.8×. Recorded playback preserves pitch when the browser supports it.
 
-Listen uses the chosen speed. Slower uses 0.65× playback. The speech is synthetic and provided by the device or browser. Offline listening depends on having a locally available voice.
+For device speech, automatic selection ranks Mexican Spanish Premium, Enhanced, and neural voices before compact or character voices. It keeps a deliberately chosen voice. If your browser does not expose a high-quality Mexican voice, add Spanish Mexico through the device’s accessibility or text-to-speech voice settings, then reopen Rumbo. The browser determines which installed voices are exposed; ranking is a preference heuristic, not a quality measurement.
+
+The previous automatic 0.85× default is migrated to Natural pace. Deliberately selected voices and other speed choices are preserved. Settings includes a voice preview and a recommended-voice reset.
+
+#### Generate the optional voice pack
+
+The app itself needs no API key. The generation tool uses an OpenAI key kept outside `dist/` in the ignored `.env.local` file or the process environment. Set it up through a secure local key setup flow; never commit it.
+
+```sh
+npm run audio:plan       # Show the corpus; no API calls or charges
+npm run audio:sample     # Generate three sample clips; paid API usage
+npm run audio:generate   # Generate or resume the full voice pack; paid API usage
+```
+
+The generator uses `gpt-4o-mini-tts` with `marin` and explicit instructions for neutral central Mexican Spanish, natural intonation, and conversational pacing. It requests only the supplied Spanish, without explanations or translations. This is a prompted synthetic accent, so listen to the samples to check suitability.
+
+Generated MP3s and their manifest live in `dist/audio/`. Existing clips are reused, completed work is checkpointed, and a failed API request stops the run. The browser then plays these files without calling OpenAI or receiving an API key. Optional paid generation is separate from running the app.
+
+See the [official OpenAI text-to-speech guide](https://developers.openai.com/api/docs/guides/text-to-speech) for the voice and accent controls.
 
 ### Speaking
 
@@ -129,14 +147,18 @@ dist/
   app.mjs                 Views, controls, and browser speech integration
   content.mjs             Lessons, quizzes, phrases, and travel conversations
   core.mjs                Review scheduling, dates, backup validation, word matching
+  voice.mjs               Voice ranking and recorded/device playback
+  audio/                  Optional generated MP3s and their lookup manifest
   index.html              App shell
   styles.css              Responsive layout and visual design
   sw.js                   Offline caching
   manifest.webmanifest    Installable web app metadata
 scripts/
   serve.mjs               Local static server with no dependencies
+  generate-audio.mjs      Optional offline audio-pack generation
 tests/
-  core.test.mjs           Seven behavior and curriculum checks
+  core.test.mjs           Review, date, backup, and curriculum checks
+  voice.test.mjs          Voice selection, playback, and recording checks
 docs/images/
   rumbo.png               App preview
 ```
@@ -148,7 +170,7 @@ npm test
 npm run check
 ```
 
-The current seven automated checks pass. Browser microphone behavior is a device-level check, separate from the automated suite.
+The current 14 automated checks pass. Browser microphone behavior is a device-level check, separate from the automated suite.
 
 Useful contributions include better beginner explanations, natural Mexican Spanish alternatives, accessibility improvements, browser compatibility fixes, and clearer travel dialogues. Describe what you changed, why it helps a learner, and how you checked it. Please do not commit personal progress exports, credentials, or private learning documents.
 

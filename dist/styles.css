@@ -8,3 +8,5 @@
 [data-voice-status]{display:flex;align-items:center;gap:9px}[data-voice-status] svg{width:16px;height:16px;flex-shrink:0}.hero-footnote svg{width:12px;height:12px}.trip-chip svg{width:11px;height:11px}.completion .big-icon svg{width:43px;height:43px;margin:auto}.source-note summary{cursor:pointer}.source-note .tip-card{padding-top:18px}.task-time svg{display:inline-block}.recording{animation:pulse 1.2s infinite}
 
 main:focus{outline:none}.phrase-actions{display:flex;gap:8px;flex-shrink:0}.completion-title{font-family:var(--serif);font-size:38px!important;font-weight:400;margin:25px 0}.hero-art text{user-select:none}@media(max-width:680px){.phrase-actions{flex-direction:column;gap:7px}.phrase-actions .sound-btn{width:33px;height:33px}.completion-title{font-size:30px!important}.hero h2{max-width:300px}.hero-art{width:165px}}
+
+.playback-presets{display:flex;gap:8px;flex-wrap:wrap}.playback-presets .active{background:var(--green);color:var(--paper);border-color:var(--green)}.voice-details{margin-top:24px!important}.voice-details summary{min-height:44px;display:flex;align-items:center}
