@@ -2,14 +2,12 @@ import {createHash} from 'node:crypto';
 import {readFile,writeFile,mkdir,stat,rename} from 'node:fs/promises';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {resolve,join} from 'node:path';
-import {lessons,phrases,scenarios,pronunciation} from '../dist/content.mjs';
 import {speechText} from '../dist/voice.mjs';
+import {speechCorpus} from './speech-corpus.mjs';
+export {speechCorpus} from './speech-corpus.mjs';
 export const AUDIO_MODEL='gpt-4o-mini-tts';
 export const AUDIO_VOICE='marin';
 export const AUDIO_INSTRUCTIONS='Speak only the provided Spanish text, exactly as written. Use a natural, contemporary, neutral central Mexican Spanish accent, like a friendly adult in Mexico City having an everyday conversation. Use Mexican seseo and natural Mexican intonation. Keep vowels clear, connect words naturally, and use a relaxed conversational pace with brief meaningful pauses. Sound warm and human, not theatrical, overly cheerful, robotic, or like a language textbook. Do not explain, translate, add words, or read punctuation aloud.';
-export function speechCorpus(){return [...new Set([
- ...phrases.map(p=>p.es),...lessons.flatMap(l=>l.examples.map(e=>e.es)),...scenarios.flatMap(s=>s.turns.map(t=>t.es)),...pronunciation.map(p=>p.es),'Hola. ¿Me trae la cuenta, por favor?'
-].map(speechText))];}
 export function speechRequest(text){return {model:AUDIO_MODEL,voice:AUDIO_VOICE,input:text,instructions:AUDIO_INSTRUCTIONS,response_format:'mp3',speed:1};}
 const profile=createHash('sha256').update(JSON.stringify({model:AUDIO_MODEL,voice:AUDIO_VOICE,instructions:AUDIO_INSTRUCTIONS})).digest('hex');
 export function clipName(text){return 'clips/'+createHash('sha256').update(profile+'\0'+speechText(text)).digest('hex').slice(0,24)+'.mp3';}
@@ -41,7 +39,7 @@ async function main(){
   }
   manifest.clips[text]=name;await save();console.log(`Audio ${i+1}/${texts.length}${exists?' · reused':' · generated'}`);
  }
- const swPath=join(root,'dist/sw.js');let worker=await readFile(swPath,'utf8');const revision=createHash('sha256').update(JSON.stringify(manifest)).digest('hex').slice(0,8);worker=worker.replace(/const CACHE='rumbo-shell-v2(?:-[a-f0-9]{8})?';/,`const CACHE='rumbo-shell-v2-${revision}';`);await writeFile(swPath,worker);
+ const swPath=join(root,'dist/sw.js');let worker=await readFile(swPath,'utf8');const revision=createHash('sha256').update(JSON.stringify(manifest)).digest('hex').slice(0,8);worker=worker.replace(/const CACHE='rumbo-shell-v\d+(?:-[a-f0-9]{8})?';/,`const CACHE='rumbo-shell-v3-${revision}';`);await writeFile(swPath,worker);
  console.log(JSON.stringify({generated,available:Object.keys(manifest.clips).length,locale:manifest.locale,voice:manifest.voice}));
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href)main().catch(error=>{console.error(error.message);process.exitCode=1;});

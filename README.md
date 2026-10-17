@@ -31,7 +31,7 @@ The repository contains the adapted app curriculum; the original Word document i
 | Area | What is included |
 | --- | --- |
 | Learn | 12 short lessons with examples and 48 multiple-choice questions |
-| Listen | Device text to speech that prefers Spanish Mexico (`es-MX`), plus slower playback |
+| Listen | 155 included Mexican Spanish recordings, plus slower playback and device speech fallback |
 | Speak | Browser speech recognition, transcript comparison, typed recall, and record and replay |
 | Remember | 90 phrases with recall ratings and scheduled review intervals |
 | Travel | Six guided role plays: restaurant, taxi, hotel, market, directions, and meeting someone |
@@ -48,7 +48,7 @@ Rumbo grew out of a conversation with Codex, starting with a beginner grammar do
 1. **Read the source material.** We extracted the text from the Word document and used its grammar topics as the course outline. We kept the explanations in English and the examples in Spanish.
 2. **Turned topics into practice.** A GPT-6 Astra specialist agent helped prepare the structured curriculum: lessons, questions, flashcards, pronunciation notes, and travel conversations. The main Codex agent built the application and connected those activities to progress and review scheduling.
 3. **Adapted the language to the destination.** Examples focus on Mexican usage, including tú, usted, and ustedes. Overgeneralized statements in the source were made more precise, including articles after hay and regional pronoun usage.
-4. **Used the browser’s existing tools.** The app uses native speech APIs, local storage, a service worker, and a web app manifest. There is no framework, build step, backend, or application API key to configure.
+4. **Kept everyday use free and simple.** The app uses native speech APIs, local storage, a service worker, and a web app manifest. We generated a Mexican Spanish voice pack locally with Piper and bundled the MP3s, so everyone hears the same voice. There is no framework, build step, backend, or application API key to configure.
 5. **Made the daily experience small and readable.** The interface combines a short daily itinerary with a searchable phrasebook, guided practice, and a calm mobile layout. The street illustration and icons are code-based SVGs.
 6. **Checked real behavior.** Automated checks cover scheduling, dates, backup validation, word comparison, and curriculum structure. Browser checks covered lesson completion, review controls, typed practice, a restaurant conversation, and phrasebook search. Layouts were inspected at 390 and 1280 pixels. The original learner also confirmed that the app opened successfully on an iPhone over home Wi-Fi.
 
@@ -94,27 +94,34 @@ Progress is stored per browser and origin. A local copy, a home Wi-Fi address, a
 
 ### Listening
 
-Rumbo can play a prerecorded Mexican Spanish voice pack, with device speech available as a fallback. Recorded speech is labeled **AI-generated** in the app. The default Natural pace is 1.0×; Clear uses 0.9× and Slow uses 0.8×. Slower buttons also use 0.8×. Recorded playback preserves pitch when the browser supports it.
+Rumbo includes **155 Mexican Spanish recordings**, generated locally with the free Piper `es_MX-claude-high` voice. The complete MP3 pack is about **3.2 MB**. Playing it requires no API key, subscription, or billing account. Device speech is available as a fallback.
+
+Recorded speech is labeled **AI-generated** in the app. The default Natural pace is 1.0×; Clear uses 0.9× and Slow uses 0.8×. Slower buttons also use 0.8×. Recorded playback preserves pitch when the browser supports it. Voice quality is subjective; the source is a Mexican Spanish model, and corrections or better recordings are welcome.
+
+On HTTPS or localhost, the offline installation caches the full voice pack alongside the lessons. Cached playback supports byte-range requests for Safari. Keep the app open until offline installation finishes. The temporary home Wi-Fi HTTP address still needs the Mac server running.
 
 For device speech, automatic selection ranks Mexican Spanish Premium, Enhanced, and neural voices before compact or character voices. It keeps a deliberately chosen voice. If your browser does not expose a high-quality Mexican voice, add Spanish Mexico through the device’s accessibility or text-to-speech voice settings, then reopen Rumbo. The browser determines which installed voices are exposed; ranking is a preference heuristic, not a quality measurement.
 
 The previous automatic 0.85× default is migrated to Natural pace. Deliberately selected voices and other speed choices are preserved. Settings includes a voice preview and a recommended-voice reset.
 
-#### Generate the optional voice pack
+#### Regenerate the voice pack for free
 
-The app itself needs no API key. The generation tool uses an OpenAI key kept outside `dist/` in the ignored `.env.local` file or the process environment. Set it up through a secure local key setup flow; never commit it.
+The recordings are already included; running the app needs only Node or a static server. Contributors who change the curriculum can regenerate the audio with Python 3.9 or newer and Node:
 
 ```sh
-npm run audio:plan       # Show the corpus; no API calls or charges
-npm run audio:sample     # Generate three sample clips; paid API usage
-npm run audio:generate   # Generate or resume the full voice pack; paid API usage
+python3 -m venv .audio-venv
+source .audio-venv/bin/activate
+python -m pip install -r scripts/requirements-audio.txt
+npm run audio:plan       # List the corpus size; no generation or downloads
+npm run audio:sample     # Generate three samples locally
+npm run audio:generate   # Generate or resume all recordings locally
 ```
 
-The generator uses `gpt-4o-mini-tts` with `marin` and explicit instructions for neutral central Mexican Spanish, natural intonation, and conversational pacing. It requests only the supplied Spanish, without explanations or translations. This is a prompted synthetic accent, so listen to the samples to check suitability.
+The first generation run downloads the approximately 60 MB voice model into ignored `.audio-models/` and verifies pinned checksums. Synthesis then runs on the computer. The generator reuses existing clips, checkpoints the manifest, and updates the offline cache revision. It never reads an API key or contacts a paid speech service.
 
-Generated MP3s and their manifest live in `dist/audio/`. Existing clips are reused, completed work is checkpointed, and a failed API request stops the run. The browser then plays these files without calling OpenAI or receiving an API key. Optional paid generation is separate from running the app.
+Voice provenance, the original model card, and license information are in [dist/audio/ATTRIBUTION.md](dist/audio/ATTRIBUTION.md). The [Piper Python API documentation](https://github.com/OHF-Voice/piper1-gpl/blob/main/docs/API_PYTHON.md) describes the local engine.
 
-See the [official OpenAI text-to-speech guide](https://developers.openai.com/api/docs/guides/text-to-speech) for the voice and accent controls.
+An optional OpenAI generator is retained for contributors who explicitly want paid generation: `npm run audio:generate:openai`. It uses `gpt-4o-mini-tts`, the `marin` voice, and Mexican Spanish accent instructions. That command requires separately enabled API billing and a securely stored key in ignored `.env.local` or the environment. It replaces the voice pack and is never used by the app or the default free audio commands. See the [official OpenAI text-to-speech guide](https://developers.openai.com/api/docs/guides/text-to-speech).
 
 ### Speaking
 
@@ -132,7 +139,7 @@ The app has no user accounts or sync service. Lessons, settings, review dates, a
 
 Estimated minutes come from completed activities. Points and streaks indicate practice, rather than proficiency.
 
-After a successful first online load, the service worker caches the app shell, lessons, and phrasebook for offline text activities. Audio, recognition, installation, and any host sign-in have their own browser or network requirements.
+After a successful first online installation on HTTPS or localhost, the service worker caches the app shell, lessons, phrasebook, and included audio. Speech recognition may still require internet. Browser storage can be cleared or evicted, so retain a progress backup.
 
 ## Adapt it for your own trip
 
@@ -148,17 +155,21 @@ dist/
   content.mjs             Lessons, quizzes, phrases, and travel conversations
   core.mjs                Review scheduling, dates, backup validation, word matching
   voice.mjs               Voice ranking and recorded/device playback
-  audio/                  Optional generated MP3s and their lookup manifest
+  audio/                  Included MP3s, lookup manifest, and voice attribution
   index.html              App shell
   styles.css              Responsive layout and visual design
   sw.js                   Offline caching
   manifest.webmanifest    Installable web app metadata
 scripts/
   serve.mjs               Local static server with no dependencies
-  generate-audio.mjs      Optional offline audio-pack generation
+  speech-corpus.mjs       Shared list of listening phrases
+  generate-audio-local.py Free local voice-pack generation with Piper
+  requirements-audio.txt  Optional generation dependencies
+  generate-audio.mjs      Explicitly optional paid OpenAI generator
 tests/
   core.test.mjs           Review, date, backup, and curriculum checks
   voice.test.mjs          Voice selection, playback, and recording checks
+  offline-audio.test.mjs  Complete pack coverage and offline Safari ranges
 docs/images/
   rumbo.png               App preview
 ```
@@ -170,7 +181,7 @@ npm test
 npm run check
 ```
 
-The current 14 automated checks pass. Browser microphone behavior is a device-level check, separate from the automated suite.
+Automated checks cover the learning logic, voice selection, playback fallback, complete audio coverage, offline audio installation, and Safari byte-range responses. Browser microphone behavior is a device-level check, separate from the automated suite.
 
 Useful contributions include better beginner explanations, natural Mexican Spanish alternatives, accessibility improvements, browser compatibility fixes, and clearer travel dialogues. Describe what you changed, why it helps a learner, and how you checked it. Please do not commit personal progress exports, credentials, or private learning documents.
 
@@ -179,5 +190,6 @@ Useful contributions include better beginner explanations, natural Mexican Spani
 - **Trinia** — shared the initial grammar document that sparked the project.
 - **The original learner** — supplied the goal, learning material, Mexico trip context, and iPhone feedback.
 - **Codex, with a GPT-6 Astra specialist agent** — helped turn the brief into the curriculum, interface, and working application.
+- **Piper, Rhasspy, and HirCoir/Piper-TTS-Spanish** — the local speech engine and Mexican Spanish voice source used for the included synthetic recordings. See the [audio attribution](dist/audio/ATTRIBUTION.md).
 
 Thank you to everyone who shares learning material, tries a small conversation, or contributes a correction.
