@@ -1,0 +1,47 @@
+.gitignore
+  s_4073584d444722::t_bde0f7dfaee1ef 12-14
+README.md
+  s_4073584d444722::t_1ed2d455c7bc20 34,51,97-101,107,109,112-117,120,122,124,142,158,165-168,172,184,193
+package.json
+  s_4073584d444722::t_bde0f7dfaee1ef 10-14
+scripts/requirements-audio.txt
+  s_4073584d444722::t_bde0f7dfaee1ef 1-2
+dist/audio/ATTRIBUTION.md
+  s_4073584d444722::t_b9b50d5d8863e4 1-28
+scripts/generate-audio-local.py
+  s_4073584d444722::t_09a15b19593915 82
+  s_4073584d444722::t_bde0f7dfaee1ef 1-81,83-127
+scripts/generate-audio.mjs
+  s_4073584d444722::t_09a15b19593915 42
+  s_4073584d444722::t_bde0f7dfaee1ef 6-7
+scripts/speech-corpus.mjs
+  s_4073584d444722::t_bde0f7dfaee1ef 1-13
+tests/offline-audio.test.mjs
+  s_4073584d444722::t_c4954849d12e72 1-61
+dist/app.mjs
+  s_4073584d444722::t_d94c65e7fa7bd3 27,116
+dist/audio/LICENSE-APACHE-2.0.txt
+  s_4073584d444722::t_700be64af810d1 1-202
+dist/audio/MODEL_CARD
+  s_4073584d444722::t_78854c8a9ebedd 1-15
+dist/audio/manifest.json
+  s_4073584d444722::t_1d5243fe4f5ccb 1-168
+dist/sw.js
+  s_4073584d444722::t_867a1e3008d111 1,3-34,36-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "9426907ce7b075dbf95eaecfd4caa6113f6cdd63",
+  "prompts": {},
+  "sessions": {
+    "s_4073584d444722": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a146e3-9ed8-7d82-8ead-0acde310e56b",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "paminOS <58338911+sudockin@users.noreply.github.com>"
+    }
+  }
+}
