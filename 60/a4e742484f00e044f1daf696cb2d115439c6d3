@@ -1,0 +1,40 @@
+dist/app.mjs
+  s_ca26d508250474::t_db7e91a7745ca9 2-3,14,16-36,79-84,86,94,96,109,139,144-146,156,167,172,177,195-196,199-200,205-206
+tests/rewards.test.mjs
+  s_ca26d508250474::t_4fe6c0fae119fe 1-35
+.github/workflows/pages.yml
+  s_ca26d508250474::t_eea0ecafce0745 1-34
+dist/index.html
+  s_ca26d508250474::t_db7e91a7745ca9 8,14,21
+dist/words.mjs
+  s_ca26d508250474::t_18de2b8a60875e 1-6,8-23
+  s_ca26d508250474::t_108b343ac79fd5 7
+dist/styles.css
+  s_ca26d508250474::t_4fe6c0fae119fe 13-88
+dist/sw.js
+  s_ca26d508250474::t_db7e91a7745ca9 1-2
+README.md
+  s_ca26d508250474::t_4beb59475d4276 57-66
+package.json
+  s_ca26d508250474::t_db7e91a7745ca9 10
+dist/core.mjs
+  s_ca26d508250474::t_2d52dc60253f78 4,15,21-22
+dist/rewards.mjs
+  s_ca26d508250474::t_34438cf420fb86 1-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "60a4e742484f00e044f1daf696cb2d115439c6d3",
+  "prompts": {},
+  "sessions": {
+    "s_ca26d508250474": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "57cb2ad9-f957-4a9e-a842-6d725c2c2f29",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "pj <e.valsamakis@gmail.com>"
+    }
+  }
+}
