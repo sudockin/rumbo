@@ -1,7 +1,7 @@
 import {NATURAL_RATE,SPEECH_VERSION} from './voice.mjs';
 export const STORAGE_KEY = 'rumbo-progress-v1';
 export function dayKey(date = new Date()) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; }
-export function initialState(){return {version:1,settings:{trip:'2027-02-01',goal:15,rate:NATURAL_RATE,speechVersion:SPEECH_VERSION,audioSource:'recorded',voice:''},completed:{},cards:{},activity:{},speaking:0,scenarios:[],updatedAt:Date.now()};}
+export function initialState(){return {version:1,settings:{trip:'2027-02-01',goal:15,rate:NATURAL_RATE,speechVersion:SPEECH_VERSION,audioSource:'recorded',voice:'',name:'Paminos'},completed:{},cards:{},activity:{},speaking:0,scenarios:[],badges:{},goalDay:'',updatedAt:Date.now()};}
 export function validDay(value){if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const d=new Date(value+'T12:00:00');return !isNaN(d)&&dayKey(d)===value;}
 export function validateState(raw){
  if(!raw||raw.version!==1||typeof raw!=='object')throw new Error('This is not a Rumbo backup.');
@@ -12,11 +12,14 @@ export function validateState(raw){
  s.settings.voice=typeof settings.voice==='string'?settings.voice.slice(0,200):'';
  if(settings.speechVersion!==SPEECH_VERSION&&!s.settings.voice&&s.settings.rate===.85)s.settings.rate=NATURAL_RATE;
  s.settings.audioSource=settings.audioSource==='device'?'device':'recorded';
+ if(typeof settings.name==='string'&&settings.name.trim())s.settings.name=settings.name.trim().slice(0,40);
  for(const [id,v] of Object.entries(raw.completed||{}))if(id.length<100&&v&&Number.isFinite(v.score)&&Number.isFinite(v.total)&&v.total>0)s.completed[id]={score:Math.max(0,Math.min(v.total,v.score)),total:v.total,date:validDay(v.date)?v.date:dayKey()};
  for(const [id,v] of Object.entries(raw.cards||{}))if(id.length<100&&v&&Number.isFinite(v.due)&&Number.isFinite(v.interval)&&Number.isFinite(v.reps))s.cards[id]={due:Math.max(0,v.due),interval:Math.max(0,Math.min(3650,v.interval)),reps:Math.max(0,Math.min(10000,v.reps)),ease:Number.isFinite(v.ease)?Math.max(1.3,Math.min(3,v.ease)):2.5};
  for(const [date,v] of Object.entries(raw.activity||{}))if(validDay(date)&&v&&Number.isFinite(v.points)&&Number.isFinite(v.minutes))s.activity[date]={points:Math.max(0,Math.min(100000,v.points)),minutes:Math.max(0,Math.min(1440,v.minutes)),reviews:Number.isFinite(v.reviews)?Math.max(0,Math.min(10000,v.reviews)):0};
  s.speaking=Number.isFinite(raw.speaking)?Math.max(0,Math.min(100000,raw.speaking)):0;
  s.scenarios=Array.isArray(raw.scenarios)?[...new Set(raw.scenarios.filter(v=>typeof v==='string'&&v.length<100))]:[];
+ for(const [id,date] of Object.entries(raw.badges||{}))if(id.length<60&&validDay(date))s.badges[id]=date;
+ if(validDay(raw.goalDay))s.goalDay=raw.goalDay;
  return s;
 }
 export function schedule(previous, grade, now=Date.now()){

@@ -54,6 +54,16 @@ Rumbo grew out of a conversation with Codex, starting with a beginner grammar do
 
 AI helped author both the software and the learning activities. The curriculum remains editable, and corrections to the Spanish, translations, or explanations are welcome.
 
+## Ranks, badges and the word of the day
+
+- A greeting by name and time of day (¡Buenos días, Paminos!). Change the name in Settings.
+- Six ranks earned with points, from Turista 🧳 to Chilango honorario 🦅, plus 13 badges, combo streaks and a daily-goal ring.
+- A Spanish word of the day with its story. Many come from Nahuatl, Greek or Arabic.
+- Fiesta celebrations (tacos, chiles, piñatas) for correct answers, finished lessons, conversations, new badges and new ranks. Motion is off when the device asks for reduced motion.
+- Progress saved before these features is kept and counts toward badges.
+
+Live version: https://sudockin.github.io/rumbo/
+
 ## Run locally
 
 You need **Node.js 20 or newer**. There are no packages to install.
