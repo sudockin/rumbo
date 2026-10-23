@@ -1,0 +1,23 @@
+README.md
+  s_ca26d508250474::t_55c0f992bd2b7e 5-10,33-41
+dist/styles.css
+  s_ca26d508250474::t_8a347f1b02867f 46,114
+package.json
+  s_ca26d508250474::t_18250751c0107d 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "2680581b164697abd69e8bd2a67b525998d9833a",
+  "prompts": {},
+  "sessions": {
+    "s_ca26d508250474": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "57cb2ad9-f957-4a9e-a842-6d725c2c2f29",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "pj <e.valsamakis@gmail.com>"
+    }
+  }
+}
