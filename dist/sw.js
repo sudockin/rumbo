@@ -1,4 +1,4 @@
-const CACHE='rumbo-shell-v4-43bb9ba6';
+const CACHE='rumbo-shell-v5-43bb9ba6';
 const ASSETS=['./','./index.html','./styles.css','./app.mjs','./core.mjs','./voice.mjs','./audio/manifest.json','./content.mjs','./words.mjs','./rewards.mjs','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable.png','./manifest.webmanifest'];
 async function installPack(){
  const cache=await caches.open(CACHE);

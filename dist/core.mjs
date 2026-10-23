@@ -51,3 +51,26 @@ export function compareSpeech(expected,actual){
  return Math.max(0,Math.round((1-grid[a.length][b.length]/Math.max(1,a.length,b.length))*100));
 }
 export function logActivity(state,points,minutes,review=false){const key=dayKey();const a=state.activity[key]||{points:0,minutes:0,reviews:0};a.points+=points;a.minutes+=minutes;if(review)a.reviews++;state.activity[key]=a;state.updatedAt=Date.now();}
+
+// Profiles: several people can learn on one device, each with their own progress.
+// The first profile ("main") keeps the original storage key, so progress saved
+// before profiles existed is never moved.
+export const PROFILES_KEY=STORAGE_KEY.replace('-progress-','-profiles-');
+export function profileKey(id){return id==='main'?STORAGE_KEY:`${STORAGE_KEY}:${id}`;}
+export function nameKey(name){return String(name).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,' ').trim();}
+export function readProfiles(storage){
+ let index=null;try{index=JSON.parse(storage.getItem(PROFILES_KEY)||'null');}catch{}
+ const list=(Array.isArray(index?.list)?index.list:[]).filter(p=>p&&/^[a-z0-9]{1,24}$/.test(p.id)&&typeof p.name==='string'&&p.name.trim()).map(p=>({id:p.id,name:p.name.trim().slice(0,40)}));
+ if(!list.some(p=>p.id==='main')&&storage.getItem(STORAGE_KEY)){let name=initialState().settings.name;try{name=validateState(JSON.parse(storage.getItem(STORAGE_KEY))).settings.name;}catch{}list.unshift({id:'main',name});}
+ return {list,active:list.some(p=>p.id===index?.active)?index.active:null};
+}
+export function writeProfiles(storage,profiles){storage.setItem(PROFILES_KEY,JSON.stringify({list:profiles.list,active:profiles.active}));}
+export function findProfile(profiles,name){const key=nameKey(name);return key?profiles.list.find(p=>nameKey(p.name)===key)||null:null;}
+export function addProfile(profiles,name,storage,setup=()=>{}){
+ const clean=String(name).trim().replace(/\s+/g,' ').slice(0,40);if(!clean)throw new Error('Type your name first.');
+ if(findProfile(profiles,clean))throw new Error('That name already has a profile.');
+ const id=profiles.list.some(p=>p.id==='main')||storage.getItem(STORAGE_KEY)?Date.now().toString(36)+Math.random().toString(36).slice(2,6):'main';
+ const state=initialState();state.settings.name=clean;setup(state);
+ storage.setItem(profileKey(id),JSON.stringify(state));profiles.list.push({id,name:clean});return id;
+}
+export function removeProfile(profiles,id,storage){storage.removeItem(profileKey(id));profiles.list=profiles.list.filter(p=>p.id!==id);if(profiles.active===id)profiles.active=null;}

@@ -64,6 +64,12 @@ AI helped author both the software and the learning activities. The curriculum r
 
 Live version: https://sudockin.github.io/rumbo/
 
+## Profiles
+
+Several people can learn on one device. The app opens on a “Who’s learning today?” screen with a card for each person (rank, points, last practice) and a name box: a name used before opens that person’s progress, and a new name starts a fresh profile. With only one profile the app opens straight away. Switch from the sidebar or the avatar at the top, and remove a profile in Settings.
+
+Progress saved before profiles existed becomes the first profile and stays under the original storage key, so nothing is moved. Profiles live in the browser on each device; use Export backup and Import backup to move one to another device.
+
 ## Run locally
 
 You need **Node.js 20 or newer**. There are no packages to install.
