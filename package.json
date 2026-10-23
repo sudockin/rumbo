@@ -1,6 +1,6 @@
 {
   "name": "rumbo-spanish-for-mexico",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "Personal Spanish learning PWA based on the supplied grammar guide, for Mexico in February 2027.",

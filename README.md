@@ -2,6 +2,12 @@
 
 **A little Spanish. A lot more Mexico.**
 
+<p align="center">
+  <a href="https://sudockin.github.io/rumbo/"><img alt="Open Rumbo" src="https://img.shields.io/badge/Open%20the%20app-sudockin.github.io%2Frumbo-314a3c?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+</p>
+
+<p align="center"><b><a href="https://sudockin.github.io/rumbo/">sudockin.github.io/rumbo</a></b><br>Free · no sign-up · Mexican Spanish audio included · works on phones and offline</p>
+
 Rumbo is a small, mobile-first Spanish learning app built for a real trip to Mexico in February 2027. It turns a beginner grammar guide into short lessons, Mexican Spanish listening, speaking practice, spaced review, and the conversations you might have over tacos, in a taxi, or at a hotel.
 
 The name comes from the Spanish word *rumbo*: direction, course, or heading. *Rumbo a México* means heading to Mexico.
@@ -24,7 +30,15 @@ The core lessons adapt the topics in that guide: basic questions, introductions,
 
 The repository contains the adapted app curriculum; the original Word document is not included.
 
-![Rumbo learning dashboard](docs/images/rumbo.png)
+![Rumbo home screen with rank, palabra del día and the Mexican street illustration](docs/images/rumbo-home.png)
+
+| Who’s learning? | Ranks and badges |
+|---|---|
+| ![Login screen with two profiles](docs/images/rumbo-login.png) | ![Progress page with ranks and badges](docs/images/rumbo-progress.png) |
+| **Listen, repeat, speak** | **¡Órale! A new rank** |
+| ![Speaking practice](docs/images/rumbo-practice.png) | ![Fiesta celebration for a new rank](docs/images/rumbo-celebration.png) |
+
+<p align="center"><img src="docs/images/rumbo-phone.png" width="300" alt="Rumbo on a phone"></p>
 
 ## What you can practice
 
